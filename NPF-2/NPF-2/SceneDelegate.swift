@@ -7,16 +7,53 @@
 //
 
 import UIKit
+import CoreLocation
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var parks : [Park] = []
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        
+        // Load data
+        if let path = Bundle.main.path(forResource: "data", ofType: "plist") {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: path))
+                let tempDict = try PropertyListSerialization.propertyList(from: data, format: nil) as! [String:Any]
+                let tempArray = tempDict["parks"] as! Array<[String:Any]>
+                
+                for dict in tempArray {
+                    let parkName = dict["parkName"]! as! String
+                    let parkLocation = dict["parkLocation"]! as! String
+                    let latitude = Double(dict["latitude"]! as! String)!
+                    let longitude = Double(dict["longitude"]! as! String)!
+                    let location = CLLocation(latitude: latitude, longitude: longitude)
+                    let imageLink = dict["imageLink"]! as! String
+                    let link = dict["link"]! as! String
+                    let dateFormed = dict["dateFormed"]! as! String
+                    let description = dict["description"]! as! String
+                    let area = dict["area"]! as! String
+                    
+                    let p = Park(parkName: parkName, parkLocation: parkLocation, dateFormed: dateFormed, area: area, link: link, location: location, imageLink: imageLink, parkDescription: description)
+                    parks.append(p)
+                }
+                
+                // Check to see if the parks were created correctly
+                for p in parks {
+                    print("Park: \(p)")
+                    
+                }
+                
+            } catch {
+                print(error)
+            }
+        }
+        
         guard let _ = (scene as? UIWindowScene) else { return }
     }
 
