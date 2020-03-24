@@ -14,13 +14,42 @@ class ViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var toolBar: UIToolbar!
+    @IBAction func refresh() {
+        print("refresh")
+        activityIndicator.startAnimating()
+        locationManager.startUpdatingLocation()
+        activityIndicator.stopAnimating()
+    }
+    @IBAction func zoomIn() {
+        // Zoom to user location
+        activityIndicator.startAnimating()
+        multiplier = 100000
+        if let userLocation = locationManager.location?.coordinate {
+            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: 20000, longitudinalMeters: 20000)
+            mapView.setRegion(viewRegion, animated: true)
+        }
+        activityIndicator.stopAnimating()
+    }
+    @IBAction func zoomOut() {
+        // Zoom out
+        activityIndicator.startAnimating()
+        if let userLocation = locationManager.location?.coordinate {
+            let viewRegion = MKCoordinateRegion(center: userLocation, latitudinalMeters: multiplier, longitudinalMeters: multiplier)
+            mapView.setRegion(viewRegion, animated: true)
+        }
+        // Increase the multiplier
+        multiplier = multiplier * 2
+        activityIndicator.stopAnimating()
+    }
     
+    var multiplier: Double = 100000
     var parks: [Park] = []
     var locationManager: CLLocationManager
     
     required init?(coder: NSCoder) {
         locationManager = CLLocationManager()
         if CLLocationManager.locationServicesEnabled() {
+            locationManager.requestAlwaysAuthorization()
             locationManager.requestWhenInUseAuthorization()
         }
         
@@ -28,6 +57,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
     }
     
     override func viewDidLoad() {
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
         super.viewDidLoad()
         
         // Get all of the parks from the SceneDelegate
@@ -40,7 +71,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
         for park: Park in parks {
             mapView.addAnnotation(park)
         }
+        
         mapView.delegate = self
+        mapView.showsUserLocation = true
+        activityIndicator.stopAnimating()
     }
 
     override func didReceiveMemoryWarning() {

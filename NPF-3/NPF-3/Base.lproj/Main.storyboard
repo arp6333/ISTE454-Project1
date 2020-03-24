@@ -22,12 +22,42 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="imV-ER-3Bc">
                                 <rect key="frame" x="0.0" y="44" width="414" height="765"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="bDL-af-JN0" appends="YES" id="Nfu-KH-2Gu"/>
+                                </connections>
                             </mapView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CSG-Pi-ZBa">
                                 <rect key="frame" x="0.0" y="803" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem image="arrow.clockwise" catalog="system" id="lYt-7V-QbG"/>
+                                    <barButtonItem image="arrow.clockwise" catalog="system" id="lYt-7V-QbG">
+                                        <connections>
+                                            <action selector="refresh" destination="BYZ-38-t0r" id="etb-Ex-8rC"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" id="Ig4-9g-yrD">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1kW-dO-EpO">
+                                            <rect key="frame" x="47" y="7" width="147" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="        Current Location"/>
+                                            <connections>
+                                                <action selector="zoomIn" destination="BYZ-38-t0r" eventType="touchUpInside" id="sqK-0t-kYM"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" id="2Wm-W0-RPm">
+                                        <button key="customView" opaque="NO" contentMode="right" contentHorizontalAlignment="fill" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Hkh-Oy-wtQ">
+                                            <rect key="frame" x="194" y="7" width="98" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="        Zoom out">
+                                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="zoomOut" destination="BYZ-38-t0r" eventType="touchUpInside" id="xWY-IZ-7UR"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="059-bU-tQR">
@@ -45,6 +75,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="bDL-af-JN0"/>
             </objects>
             <point key="canvasLocation" x="131.8840579710145" y="137.94642857142856"/>
         </scene>
